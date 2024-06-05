@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { StoreProvider } from "./StoreProvider";
-import { Nav } from "./components/Nav";
+import { Header } from "./components/Header";
 
 import "./styles/globals.css";
 import Footer from "./components/Footer";
@@ -16,7 +16,7 @@ export default function RootLayout({ children }: Props) {
       <html lang="en">
         <body>
           <section className="">
-            <Nav />
+            <Header />
 
             <header className="">
               <Image
