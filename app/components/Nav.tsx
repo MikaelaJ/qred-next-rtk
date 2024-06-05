@@ -3,34 +3,32 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import styles from "../styles/layout.module.css";
-
 export const Nav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.nav}>
+    <nav className="">
       <Link
-        className={`${styles.link} ${pathname === "/" ? styles.active : ""}`}
+       /*  className={`${styles.link} ${pathname === "/" ? styles.active : ""}`} */
         href="/"
       >
         Home
       </Link>
       <Link
-        className={`${styles.link} ${
-          pathname === "/verify" ? styles.active : ""
-        }`}
-        href="/verify"
+        /* className={`${styles.link} ${
+          pathname === "/admin" ? styles.active : ""
+        }`} */
+        href="/admin"
       >
-        Verify
+        Admin
       </Link>
       <Link
-        className={`${styles.link} ${
-          pathname === "/quotes" ? styles.active : ""
-        }`}
-        href="/quotes"
+        /* className={`${styles.link} ${
+          pathname === "/profile" ? styles.active : ""
+        }`} */
+        href="/profile"
       >
-        Quotes
+        Profile
       </Link>
     </nav>
   );
