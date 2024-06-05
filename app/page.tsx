@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-between p-24">
       <div className="flex container max-w-5xl items-center justify-between lg:flex">
-        <h1>Välkommen till Qred</h1>
+        <h1 className="text-3xl font-bold underline">Välkommen till Qred</h1>
       </div>
       <div>
         <a href="/admin">Adminsida</a>
