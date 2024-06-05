@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { StoreProvider } from "./StoreProvider";
 import { Header } from "./components/Header";
@@ -17,17 +16,6 @@ export default function RootLayout({ children }: Props) {
         <body>
           <section className="">
             <Header />
-
-            <header className="">
-              <Image
-                src="/logo.svg"
-                className=""
-                alt="logo"
-                width={100}
-                height={100}
-              />
-            </header>
-
             <main className="">{children}</main>
             <Footer />
           </section>
