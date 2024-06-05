@@ -28,15 +28,15 @@ export const UserList = () => {
 
   if (isSuccess && data) {
     return (
-      <div className="">
-        <h3>Lista på användare:</h3>
-       
+      <div className="flex justify-center">       
         {
-          <div>
+          <div className="flex-col py-12 w-1/2 ">
             {data.map((user: UsersApiResponse, index:number) => (
-              <div key={index}>
-              <h2>{user.name}</h2> 
-              <h4>{user.username}</h4> 
+              <div className={`${index & 1 ? "bg-black-qred-lighter" : "bg-white"} py-2 px-2`} key={index}>
+              <h1 className="text-secondary-qred text-2xl font-bold">{user.name}</h1> 
+              <p className="text-sm"><span className="font-bold">User name: </span>{user.username}</p>
+              <p className="text-sm"><span className="font-bold">Email: </span> {user.email}</p>
+              
               </div>
             ))}
           </div>

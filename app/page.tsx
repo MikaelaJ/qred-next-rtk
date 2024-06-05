@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-/* import Profile from "../components/Profile"; */
-
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <div className="flex container max-w-5xl items-center justify-between lg:flex">
-        <h1 className="text-3xl font-bold underline">Välkommen till Qred</h1>
+    <main className="flex flex-col items-center justify-center p-24 w-full">
+      <div className="flex ">
+        <h1 className="text-6xl font-bold mb-20">Välkommen till Qred</h1>
       </div>
-      <div>
-        <a href="/admin">Adminsida</a>
-        <Link href="/profile">Go to Profile</Link>
-        <a href="/profile">Profilsida</a>
+      <div className="container flex-col space-y-5 justify-center w-1/5">
+        <button className="flex bg-primary-qred w-full py-2 rounded-full justify-center text-white">
+          <Link href="/profile">Go to Profile</Link>
+        </button>
+        <button className="flex bg-primary-qred w-full py-2 rounded-full justify-center text-white">
+          <Link href="/admin">Login</Link>
+        </button>
       </div>
-      {/*  <Profile /> */}
     </main>
   );
 }

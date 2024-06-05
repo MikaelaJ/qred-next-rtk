@@ -4,7 +4,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
- 
+
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
@@ -20,17 +20,28 @@ module.exports = {
         transparent: "transparent",
         current: "currentColor",
         primary: {
-          qred: "#2fd67a",
+          qred: {
+            light: "#ff5a5f",
+            DEFAULT: "#2fd67a",
+            dark: "#ff5a5f",
+          },
         },
         secondary: {
-          qred: "#214749",
+          qred: {
+            light: "#ff5a5f",
+            DEFAULT: "#214749",
+            dark: "#ff5a5f",
+          },
         },
         black: {
-          qred: "#222"
-        }
+          qred: {
+            lighter: "#DEDEDE",
+            DEFAULT: "#222",
+            darker: "#1A1A1A",
+          },
+        },
       },
     },
   },
   plugins: [],
-}
-
+};

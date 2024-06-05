@@ -11,20 +11,20 @@ const navLinks = [
     url: "/",
   },
   {
-    title: "Företagslån",
-    url: "https://www.qred.se/foretagslan",
+    title: "Business loan",
+    url: "https://en.qred.se/businessloan",
   },
   {
-    title: "Om Qred",
+    title: "About Qred",
     url: "https://www.qred.se/om-oss",
   },
   {
-    title: "Profil",
+    title: "Profile",
     url: "/profile",
   },
   {
-    title: "Logga in",
-    url: "/login",
+    title: "Login",
+    url: "/admin",
   },
 ];
 
