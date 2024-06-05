@@ -1,9 +1,8 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { counterSlice } from "./features/counter/counterSlice";
 import { usersApiSlice } from "./features/users/usersApiSlice";
 
-const rootReducer = combineSlices(counterSlice, usersApiSlice);
+const rootReducer = combineSlices(usersApiSlice);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
