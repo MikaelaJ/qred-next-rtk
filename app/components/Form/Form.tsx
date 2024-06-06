@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import FormField from "./FormField";
 import { FormData, validationSchema } from "@/app/models/interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetUsersByIdQuery } from "@/lib/features/users/usersApiSlice";
+import { useUpdateUserMutation } from "@/lib/features/users/usersApiSlice";
 
 export default function Form({ userId }: { userId: number }) {
+  const [updateUser] = useUpdateUserMutation();
   const { data, isError, isLoading, isSuccess } = useGetUsersByIdQuery(
     Number(userId)
   );
@@ -18,11 +20,11 @@ export default function Form({ userId }: { userId: number }) {
 
   useEffect(() => {
     if (data) {
-      setZipCode(data.address.zipcode);
+      setZipCode(data.address.zipcode.toString());
       setStreet(data.address.street);
       setCity(data.address.city);
       setEmail(data.email);
-      setPhone(data.phone);
+      setPhone(data.phone.toString());
     }
   }, [data]);
 
@@ -35,44 +37,20 @@ export default function Form({ userId }: { userId: number }) {
     resolver: zodResolver(validationSchema),
   });
 
+ 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { zipcode, street, city, email, phone, userId, error } = data;
+    const { zipcode, street, city, email, phone } = data;
 
-    /* const fieldErrorMapping: Record<keyof FormData, string> = {
-      email: "email",
-      zipcode: "zipcode",
-      street: "street",
-      city: "city",
-      phone: "phone",
-      userId: "userId",
-    }; */
-
-    /* const fieldWithError = Object.keys(fieldErrorMapping).find(
-      (field) => error[field]
-    ); */
     try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            zipcode: zipcode,
-            street: street,
-            city: city,
-            email: email,
-            phone: phone,
-          }),
-        }
-      );
+      await updateUser({
+        zipcode,
+        street,
+        city,
+        email,
+        phone,
+      }).unwrap();
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const json = await response.json();
-      console.log('json', json);
+      // handle success...
     } catch (error) {
       console.error("Error:", error);
     }
@@ -110,13 +88,6 @@ export default function Form({ userId }: { userId: number }) {
                 onChange={(e) => setStreet(e.target.value)}
                 register={register}
                 error={errors.street}
-                validationSchema={{
-                  required: "Email is a required field",
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Email should have correct format",
-                  },
-                }}
                 required
               />
               <FormField
@@ -126,12 +97,9 @@ export default function Form({ userId }: { userId: number }) {
                 htmlFor="zipcode"
                 id="zipcode"
                 defaultValue={zipCode}
-                onChange={(e) => setStreet(e.target.value)}
+                onChange={(e) => setZipCode(e.target.value.toString())}
                 register={register}
                 error={errors.zipcode}
-                validationSchema={{
-                  required: "Field is required"
-                }}
                 required
               />
               <FormField
@@ -141,42 +109,33 @@ export default function Form({ userId }: { userId: number }) {
                 htmlFor="city"
                 id="city"
                 defaultValue={city}
-                onChange={(e) => setStreet(e.target.value)}
+                onChange={(e) => setCity(e.target.value)}
                 register={register}
                 error={errors.city}
-                validationSchema={{
-                  required: "Field is required"
-                }}
                 required
               />
               <FormField
-                type="text"
+                type="email"
                 name="email"
                 label="email"
                 htmlFor="email"
                 id="email"
                 defaultValue={email}
-                onChange={(e) => setStreet(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 register={register}
                 error={errors.email}
-                validationSchema={{
-                  required: "Field is required"
-                }}
                 required
               />
               <FormField
-                type="text"
+                type="tel"
                 name="phone"
                 label="phone"
                 htmlFor="phone"
                 id="phone"
                 defaultValue={phone}
-                onChange={(e) => setStreet(e.target.value)}
+                onChange={(e) => setPhone(e.target.value.toString())}
                 register={register}
                 error={errors.phone}
-                validationSchema={{
-                  required: "Field is required"
-                }}
                 required
               />
             </div>

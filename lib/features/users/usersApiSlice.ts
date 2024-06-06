@@ -1,39 +1,10 @@
-// Need to use the React-specific entry point to import `createApi`
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-/* import { UsersApiResponse } from "@/models/interface"; */
-
-interface Geo {
-  lat: string;
-  lng: string;
-}
-
-interface Address {
-  street: string;
-  suite: string;
-  city: string;
-  zipcode: string;
-  geo: Geo;
-}
-
-interface Company {
-  name: string;
-  catchPhrase: string;
-  bs: string;
-}
-
-export interface UsersApiResponse {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: Address;
-  phone: string;
-  website: string;
-  company: Company;
-}
+import { UsersApiResponse, UpdateUserFormData } from "@/app/models/interface";
 
 export const usersApiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "https://jsonplaceholder.typicode.com/users" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://jsonplaceholder.typicode.com/users",
+  }),
   reducerPath: "usersApi",
   tagTypes: ["User"],
   endpoints: (builder) => ({
@@ -45,7 +16,22 @@ export const usersApiSlice = createApi({
       query: (limit = 100) => `?limit=${limit}`,
       providesTags: (result, error, id) => [{ type: "User", id }],
     }),
-  })
+    updateUser: builder.mutation<void, UpdateUserFormData>({
+      query: (data) => {
+        const { userId, ...userDetails } = data;
+        const formData = new FormData();
+        Object.entries(userDetails).forEach(([key, value]) => {
+          formData.append(key, value as string | Blob );
+        });
+
+        return {
+          url: `/${userId}`,
+          method: "PUT",
+          body: formData,
+        };
+      },
+    }),
+  }),
 });
 
-export const { useGetUsersByIdQuery, useGetAllUsersQuery } = usersApiSlice;
+export const { useGetUsersByIdQuery, useGetAllUsersQuery, useUpdateUserMutation } = usersApiSlice;

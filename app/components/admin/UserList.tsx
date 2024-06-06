@@ -1,6 +1,6 @@
 "use client";
 import { UsersApiResponse } from "@/app/models/interface";
-import { useGetAllUsersQuery, useGetUsersByIdQuery } from "@/lib/features/users/usersApiSlice";
+import { useGetAllUsersQuery } from "@/lib/features/users/usersApiSlice";
 
 
 

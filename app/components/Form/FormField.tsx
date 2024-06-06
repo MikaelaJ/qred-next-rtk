@@ -8,7 +8,6 @@ const FormField: React.FC<FormFieldProps> = ({
   defaultValue,
   register,
   error,
-  validationSchema
 }) => (
   <>
     <div className="flex flex-col">
@@ -23,11 +22,10 @@ const FormField: React.FC<FormFieldProps> = ({
         type={type}
         id={htmlFor}
         defaultValue={defaultValue}
-        {...register(name, validationSchema)}
+        {...register(name)}
       />
     </div>
-    {error && 
-    <span className="text-red-500 text-xs">{error.message}</span>}
+    {error && <span className="text-red-500 text-xs">{error.message}</span>}
   </>
 );
 
