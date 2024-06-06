@@ -1,5 +1,5 @@
 "use client";
-import { UsersApiResponse } from "@/app/models/interface";
+
 import { useGetUsersByIdQuery } from "@/lib/features/users/usersApiSlice";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -11,7 +11,8 @@ export function Profile({ userId }: { userId: number }) {
   const { data, isError, isLoading, isSuccess } = useGetUsersByIdQuery(
     Number(userId)
   );
-  console.log(data?.address.zipcode, data?.address.city, data?.email);
+  console.log(data?.address.zipcode, data?.address.city, data?.email, userId);
+
   const [zipCode, setZipCode] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
@@ -29,28 +30,37 @@ export function Profile({ userId }: { userId: number }) {
   }, [data]);
   console.log(data, zipCode, city, email);
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+    const handleSubmit = async (event: { preventDefault: () => void }) => {
+      event.preventDefault();
 
-    const response = await fetch("https://jsonplaceholder.typicode.com/users", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        zipcode: zipCode,
-        city: city,
-        email: email,
-      }),
-    });
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${userId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              zipcode: zipCode,
+              street: street,
+              city: city,
+              email: email,
+              phone: phone,
+            }),
+          }
+        );
 
-    if (!response.ok) {
-      // Handle error...
-    }
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
 
-    const responseData = await response.json();
-    // Handle the response...
-  };
+        const json = await response.json();
+        console.log(json);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
 
   if (isError) {
     return (
@@ -83,7 +93,7 @@ export function Profile({ userId }: { userId: number }) {
         <p>ZipCode: {zipCode}</p>
 
         <div className="flex-col bg-white p-4 rounded-md">
-          <form action="#" method="POST" className="flex-col space-y-4">
+          <form onSubmit={handleSubmit} className="flex-col space-y-4">
             <div>
               <label
                 htmlFor="street_name"
