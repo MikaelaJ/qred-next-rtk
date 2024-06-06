@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center p-24 w-full">
       <div className="flex ">
-        <h1 className="text-6xl font-bold mb-20">Välkommen till Qred</h1>
+        <h1 className="pb-20">Välkommen till Qred</h1>
       </div>
       <div className="container flex-col space-y-5 justify-center w-1/5">
         <button className="flex bg-primary-qred w-full py-2 rounded-full justify-center text-white">

@@ -1,12 +1,18 @@
+"use client"
+import { usePathname } from 'next/navigation'
 import { Profile } from "../components/profile/Profile";
 
-export default function QuotesPage() {
+
+export default function ProfilePage() {
+  const pathname = usePathname()
+  console.log(pathname);
   return (
-    <>
-      <h1>Userlist page</h1>
-      <p>This page is intended to showcase RTK Query.</p>
-      Profile page!
-      <Profile />
-    </>
+    <div className="flex flex-col container max-w-6xl justify-center">
+      <h1 className="flex text-center justify-center py-16">Welcome to your profile page</h1>
+      <section className="flex justify-center">
+      <Profile userId={2}/>
+      </section>
+    </div>
   );
 }
+

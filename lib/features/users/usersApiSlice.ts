@@ -38,13 +38,9 @@ export const usersApiSlice = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     getUsersById: builder.query<UsersApiResponse, number>({
-      query: (id) => `users/${id}`,
+      query: (id) => `/${id}`,
       providesTags: (result, error, id) => [{ type: "User", id }],
     }),
-    /* getAllUsers: builder.query<UsersApiResponse[], void>({
-      query: () => 'users',
-      providesTags: ["User"],
-    }), */
     getAllUsers: builder.query<UsersApiResponse[], number>({
       query: (limit = 100) => `?limit=${limit}`,
       providesTags: (result, error, id) => [{ type: "User", id }],
