@@ -13,7 +13,7 @@ export function Profile() {
       </div>
 
       <h4 className="flex text-center pb-12">Edit your profile</h4>
-        <Form userId={1} />
+        <Form userId={7} />
     </div>
   );
 }

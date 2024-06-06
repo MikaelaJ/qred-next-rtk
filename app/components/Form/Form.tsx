@@ -11,6 +11,7 @@ export default function Form({ userId }: { userId: number }) {
   const { data, isError, isLoading, isSuccess } = useGetUsersByIdQuery(
     Number(userId)
   );
+  console.log(userId);
 
   const [zipCode, setZipCode] = useState("");
   const [street, setStreet] = useState("");
