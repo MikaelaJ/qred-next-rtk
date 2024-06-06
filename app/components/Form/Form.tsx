@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 import FormField from "./FormField";
-import { FormData, UserSchema, ValidFieldNames } from "@/app/models/interface";
-/* import { zodResolver } from "@hookform/resolvers/zod"; */
+import { FormData, validationSchema } from "@/app/models/interface";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetUsersByIdQuery } from "@/lib/features/users/usersApiSlice";
 
 export default function Form({ userId }: { userId: number }) {
-  console.log("userID", userId);
   const { data, isError, isLoading, isSuccess } = useGetUsersByIdQuery(
     Number(userId)
   );
-  console.log(data?.address.zipcode, data?.address.city, data?.email, userId);
 
   const [zipCode, setZipCode] = useState("");
   const [street, setStreet] = useState("");
@@ -27,11 +25,31 @@ export default function Form({ userId }: { userId: number }) {
       setPhone(data.phone);
     }
   }, [data]);
-  console.log(data, zipCode, city, email);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    /* setError, */
+  } = useForm<FormData>({
+    resolver: zodResolver(validationSchema),
+  });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { zipcode, street, city, email, phone, userId } = data;
+    const { zipcode, street, city, email, phone, userId, error } = data;
 
+    /* const fieldErrorMapping: Record<keyof FormData, string> = {
+      email: "email",
+      zipcode: "zipcode",
+      street: "street",
+      city: "city",
+      phone: "phone",
+      userId: "userId",
+    }; */
+
+    /* const fieldWithError = Object.keys(fieldErrorMapping).find(
+      (field) => error[field]
+    ); */
     try {
       const response = await fetch(
         `https://jsonplaceholder.typicode.com/users/${userId}`,
@@ -41,7 +59,7 @@ export default function Form({ userId }: { userId: number }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            zipcode: zipCode,
+            zipcode: zipcode,
             street: street,
             city: city,
             email: email,
@@ -53,22 +71,12 @@ export default function Form({ userId }: { userId: number }) {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const json = await response.json();
-      console.log(json);
+      console.log('json', json);
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  console.log(watch("street"));
 
   if (isError) {
     return (
@@ -101,9 +109,13 @@ export default function Form({ userId }: { userId: number }) {
                 defaultValue={street}
                 onChange={(e) => setStreet(e.target.value)}
                 register={register}
-                error={errors.email}
+                error={errors.street}
                 validationSchema={{
-                  required: "Field is required"
+                  required: "Email is a required field",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Email should have correct format",
+                  },
                 }}
                 required
               />

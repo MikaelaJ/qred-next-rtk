@@ -1,3 +1,4 @@
+import { error } from "console";
 import { FieldError, UseFormRegister } from "react-hook-form";
 import { z, ZodType } from "zod";
 
@@ -8,20 +9,24 @@ export type FormData = {
   email: string;
   phone: number;
   userId: number;
+  error: string;
+  
 };
 
-export const UserSchema: ZodType<FormData> = z.object({
-  email: z.string().email(),
+export const validationSchema: ZodType<FormData> = z.object({
+  email: z.string().email().min(1, { message: "Email is required, just so you know" }),
   zipcode: z.string(),
   street: z.string(),
   city: z.string(),
   phone: z.number(),
   userId: z.number(),
+  error: z.string(),
+
 });
 
 export type FormFieldProps = {
   type: string;
-  name: ValidFieldNames;
+  name: keyof FormData;
   label: string;
   htmlFor: string;
   register: UseFormRegister<FormData>;
@@ -31,15 +36,8 @@ export type FormFieldProps = {
   id: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
-  validationSchema?: { required: string };
+  validationSchema?: { required: string, pattern?: { value: RegExp, message: string }};
 };
-
-export type ValidFieldNames =
-  | "street"
-  | "city"
-  | "zipcode"
-  | "email"
-  | "phone";
 
 interface Geo {
   lat: string;

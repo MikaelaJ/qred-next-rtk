@@ -5,7 +5,6 @@ import { Profile } from "../components/profile/Profile";
 
 export default function ProfilePage() {
   const pathname = usePathname()
-  console.log(pathname);
   return (
     <div className="flex flex-col container max-w-6xl justify-center">
       <h1 className="flex text-center justify-center py-16">Welcome to your profile page</h1>

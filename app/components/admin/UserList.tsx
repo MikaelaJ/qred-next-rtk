@@ -8,7 +8,6 @@ export const UserList = () => {
   // Using a query hook automatically fetches data and returns query values
   const { data, isError, isLoading, isSuccess } =
     useGetAllUsersQuery(20);
-  console.log(data);
 
   if (isError) {
     return (
