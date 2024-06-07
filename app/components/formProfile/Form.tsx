@@ -58,6 +58,7 @@ export default function Form({ userId }: { userId: number }) {
   if (isSuccess && data) {
     return (
       <div className="flex flex-col bg-black-qred-lighter pb-32">
+        <h1>{data.name}</h1>
         <div className="flex-col bg-white p-4 md:w-64 lg:w-80 rounded-md">
           <form onSubmit={handleSubmit(onSubmit)} className="flex-col">
             <div className="pb-6 space-y-2">

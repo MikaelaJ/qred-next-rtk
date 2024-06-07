@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Form from "../Form/Form";
+import Form from "../formProfile/Form";
 
 const logoGrenUrl = "/qred_logo.png";
 

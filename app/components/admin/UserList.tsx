@@ -5,7 +5,6 @@ import { useGetAllUsersQuery } from "@/lib/features/users/usersApiSlice";
 
 
 export const UserList = () => {
-  // Using a query hook automatically fetches data and returns query values
   const { data, isError, isLoading, isSuccess } =
     useGetAllUsersQuery(20);
 
