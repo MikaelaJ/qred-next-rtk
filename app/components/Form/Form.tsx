@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormField from "./FormField";
 import { FormData, validationSchema } from "@/app/models/interface";
@@ -13,35 +13,17 @@ export default function Form({ userId }: { userId: number }) {
   );
   console.log(userId);
 
-  const [zipCode, setZipCode] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-
-  useEffect(() => {
-    if (data) {
-      setZipCode(data.address.zipcode.toString());
-      setStreet(data.address.street);
-      setCity(data.address.city);
-      setEmail(data.email);
-      setPhone(data.phone.toString());
-    }
-  }, [data]);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-    /* setError, */
   } = useForm<FormData>({
     resolver: zodResolver(validationSchema),
   });
 
- 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const { zipcode, street, city, email, phone } = data;
-
+    console.log(data);
     try {
       await updateUser({
         zipcode,
@@ -51,7 +33,7 @@ export default function Form({ userId }: { userId: number }) {
         phone,
       }).unwrap();
 
-      // handle success...
+      console.log("successfully updated the user");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -82,35 +64,32 @@ export default function Form({ userId }: { userId: number }) {
               <FormField
                 type="text"
                 name="street"
-                label="street name" 
+                label="street name"
                 htmlFor="street"
                 id="street"
-                defaultValue={street}
-                onChange={(e) => setStreet(e.target.value)}
+                defaultValue={data.address.street}
                 register={register}
                 error={errors.street}
                 required
               />
-              <FormField
+              {/* <FormField
                 type="text"
                 name="zipcode"
                 label="postal code"
                 htmlFor="zipcode"
                 id="zipcode"
-                defaultValue={zipCode}
-                onChange={(e) => setZipCode(e.target.value.toString())}
+                defaultValue={data.address.zipcode}
                 register={register}
                 error={errors.zipcode}
                 required
-              />
+              /> */}
               <FormField
                 type="text"
                 name="city"
                 label="city"
                 htmlFor="city"
                 id="city"
-                defaultValue={city}
-                onChange={(e) => setCity(e.target.value)}
+                defaultValue={data.address.city}
                 register={register}
                 error={errors.city}
                 required
@@ -121,29 +100,27 @@ export default function Form({ userId }: { userId: number }) {
                 label="email"
                 htmlFor="email"
                 id="email"
-                defaultValue={email}
-                onChange={(e) => setEmail(e.target.value)}
+                defaultValue={data.email}
                 register={register}
                 error={errors.email}
                 required
               />
-              <FormField
+              {/*  <FormField
                 type="tel"
                 name="phone"
                 label="phone"
                 htmlFor="phone"
                 id="phone"
-                defaultValue={phone}
-                onChange={(e) => setPhone(e.target.value.toString())}
+                defaultValue={data.phone}
                 register={register}
                 error={errors.phone}
                 required
-              />
+              /> */}
             </div>
             <div>
               <button
                 type="submit"
-                className="w-fullflex bg-primary-qred w-full py-2 rounded-full justify-center text-white shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                className="flex bg-primary-qred w-full py-2 rounded-full justify-center text-white shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 Save changes
               </button>

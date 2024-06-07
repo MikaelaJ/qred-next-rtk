@@ -19,7 +19,6 @@ export const validationSchema: ZodType<FormData> = z.object({
   phone: z.number().positive(),
   userId: z.number(),
   error: z.string(),
-
 });
 
 export type FormFieldProps = {

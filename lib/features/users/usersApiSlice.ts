@@ -23,6 +23,7 @@ export const usersApiSlice = createApi({
         Object.entries(userDetails).forEach(([key, value]) => {
           formData.append(key, value as string | Blob );
         });
+        console.log(formData);
 
         return {
           url: `/${userId}`,
