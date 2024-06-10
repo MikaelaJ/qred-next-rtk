@@ -64,7 +64,7 @@ export default function Form({ userId }: { userId: number }) {
 
   if (isSuccess && data) {
     return (
-      <div className="flex flex-col bg-black-qred-lighter pb-32">
+      <div className="flex flex-col bg-black-qred-lighter mb-32">
         <div className="flex-col bg-white p-4 md:w-64 lg:w-80 rounded-md">
           <form
             onSubmit={handleSubmit(onSubmit)}
