@@ -1,4 +1,4 @@
-import { UserList } from "../components/admin/UserList";
+import { UserList } from "@/app/components/admin/UserList";
 
 export default function VerifyPage() {
   return (

@@ -23,7 +23,7 @@ const navLinks = [
     url: "/profile",
   },
   {
-    title: "Login",
+    title: "Admin",
     url: "/admin",
   },
 ];
