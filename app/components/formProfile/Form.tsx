@@ -1,18 +1,25 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormField from "./FormField";
-import { FormData, validationSchema } from "@/app/models/interface";
+import { ApiUser } from "@/app/models/interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGetUsersByIdQuery } from "@/lib/features/users/usersApiSlice";
+import { useGetUserByIdQuery } from "@/lib/features/users/usersApiSlice";
 import { useUpdateUserMutation } from "@/lib/features/users/usersApiSlice";
+import { z } from "zod";
+
+export const validationSchema = z.object({
+  email: z.string().email().min(1),
+  zipcode: z.string(),
+  street: z.string().min(1),
+  city: z.string().min(1),
+  phone: z.string(),
+});
+
+export type FormData = z.infer<typeof validationSchema>;
 
 export default function Form({ userId }: { userId: number }) {
   const [updateUser] = useUpdateUserMutation();
-  const { data, isError, isLoading, isSuccess } = useGetUsersByIdQuery(
-    Number(userId)
-  );
-  console.log(userId);
-
+  const { data, isError, isLoading, isSuccess } = useGetUserByIdQuery(userId);
   const {
     register,
     handleSubmit,
@@ -21,19 +28,19 @@ export default function Form({ userId }: { userId: number }) {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { zipcode, street, city, email, phone } = data;
-    console.log(data);
-    try {
-      await updateUser({
-        zipcode,
-        street,
-        city,
-        email,
-        phone,
-      }).unwrap();
+  const onSubmit: SubmitHandler<FormData> = async (formData) => {
+    const { zipcode, street, city, email, phone } = formData;
 
-      console.log("successfully updated the user");
+    try {
+      const updatedApiUser: ApiUser = {
+        ...data!,
+        phone,
+        email,
+        address: { ...data!.address, street, zipcode, city },
+      };
+      await updateUser(updatedApiUser).unwrap();
+
+      console.log("Successfully updated the user");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -58,9 +65,12 @@ export default function Form({ userId }: { userId: number }) {
   if (isSuccess && data) {
     return (
       <div className="flex flex-col bg-black-qred-lighter pb-32">
-        <h1>{data.name}</h1>
         <div className="flex-col bg-white p-4 md:w-64 lg:w-80 rounded-md">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex-col">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            className="flex-col"
+          >
             <div className="pb-6 space-y-2">
               <FormField
                 type="text"
@@ -73,7 +83,7 @@ export default function Form({ userId }: { userId: number }) {
                 error={errors.street}
                 required
               />
-              {/* <FormField
+              <FormField
                 type="text"
                 name="zipcode"
                 label="postal code"
@@ -83,7 +93,7 @@ export default function Form({ userId }: { userId: number }) {
                 register={register}
                 error={errors.zipcode}
                 required
-              /> */}
+              />
               <FormField
                 type="text"
                 name="city"
@@ -106,7 +116,7 @@ export default function Form({ userId }: { userId: number }) {
                 error={errors.email}
                 required
               />
-              {/*  <FormField
+              <FormField
                 type="tel"
                 name="phone"
                 label="phone"
@@ -116,7 +126,7 @@ export default function Form({ userId }: { userId: number }) {
                 register={register}
                 error={errors.phone}
                 required
-              /> */}
+              />
             </div>
             <div>
               <button

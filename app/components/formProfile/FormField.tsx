@@ -1,4 +1,19 @@
-import { FormFieldProps } from "@/app/models/interface";
+import {FieldError, UseFormRegister} from "react-hook-form";
+import {FormData} from "@/app/components/formProfile/Form";
+
+export type FormFieldProps = {
+    type: string;
+    name: keyof FormData;
+    label: string;
+    htmlFor: string;
+    register: UseFormRegister<FormData>;
+    error: FieldError | undefined;
+    valueAsNumber?: boolean;
+    defaultValue?: string | number;
+    id: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean;
+};
 
 const FormField: React.FC<FormFieldProps> = ({
   type,

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UsersApiResponse, UpdateUserFormData } from "@/app/models/interface";
+import { ApiUser } from "@/app/models/interface";
 
 export const usersApiSlice = createApi({
   baseQuery: fetchBaseQuery({
@@ -8,31 +8,33 @@ export const usersApiSlice = createApi({
   reducerPath: "usersApi",
   tagTypes: ["User"],
   endpoints: (builder) => ({
-    getUsersById: builder.query<UsersApiResponse, number>({
+    getUserById: builder.query<ApiUser, number>({
       query: (id) => `/${id}`,
       providesTags: (result, error, id) => [{ type: "User", id }],
     }),
-    getAllUsers: builder.query<UsersApiResponse[], number>({
+    getAllUsers: builder.query<ApiUser[], number>({
       query: (limit = 100) => `?limit=${limit}`,
-      providesTags: (result, error, id) => [{ type: "User", id }],
+      providesTags: (result, error, limit) =>
+        result
+          ? [...result.map(({ id }) => ({ type: "User" as const, id }))]
+          : [],
     }),
-    updateUser: builder.mutation<void, UpdateUserFormData>({
+    updateUser: builder.mutation<void, ApiUser>({
       query: (data) => {
-        const { userId, ...userDetails } = data;
-        const formData = new FormData();
-        Object.entries(userDetails).forEach(([key, value]) => {
-          formData.append(key, value as string | Blob );
-        });
-        console.log(formData);
-
+        console.log(JSON.stringify(data));
         return {
-          url: `/${userId}`,
+          url: `/${data.id}`,
           method: "PUT",
-          body: formData,
+          body: data,
         };
       },
+      invalidatesTags: (result, error, user) => [{ type: "User", id: user.id }],
     }),
   }),
 });
 
-export const { useGetUsersByIdQuery, useGetAllUsersQuery, useUpdateUserMutation } = usersApiSlice;
+export const {
+  useGetUserByIdQuery,
+  useGetAllUsersQuery,
+  useUpdateUserMutation,
+} = usersApiSlice;
